@@ -1,4 +1,5 @@
 import './styles/App.css';  
+import {useEffect} from 'react';
 import styled from "styled-components";
 import { GameSection, Tile, TileContainer, TileRow } from './components/TileContainer';
 import { KeyboardButton, KeyboardRow, KeyboardSection, Flex, BackspaceIcon} from './components/KeyBoardUI';
@@ -31,6 +32,32 @@ const Header = styled.header`
 `;
 
 function App() {
+
+  const keyboardRows = [
+    ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
+    ["a", "s", "d", "f", "g", "h", "j", "k", "l"],
+    ["Enter", "z", "x", "c", "v", "b", "n", "m", "Backspace"],
+  ];
+  const allKeys = keyboardRows.flat();
+  const handleClick = (key) =>{};
+
+  useEffect(() => {
+    const handleKeyDown = (evt) => {
+      if(allKeys.includes(evt.key)){
+        console.log(evt.key)
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  
+  }, []);
+
+  
+  
+  
   return (
     <Main>
       <Header>WORDLE</Header>
@@ -48,13 +75,13 @@ function App() {
       <KeyboardSection>
         <KeyboardRow>
           {["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"].map((key) => (
-            <KeyboardButton>{key}</KeyboardButton>
+            <KeyboardButton onClick={() => handleClick(key)}>{key}</KeyboardButton>
           ))}
         </KeyboardRow>
         <KeyboardRow>
         <Flex item={0.5} />
           {["a", "s", "d", "f", "g", "h", "j", "k", "l"].map((key) => (
-            <KeyboardButton>{key}</KeyboardButton>
+            <KeyboardButton onClick={() => handleClick(key)}>{key}</KeyboardButton>
           ))}
           <Flex item={0.5} />
         </KeyboardRow>
@@ -62,6 +89,7 @@ function App() {
           {["enter", "z", "x", "c", "v", "b", "n", "m", "backspace"].map(
             (key) => (
               <KeyboardButton
+              onClick={() => handleClick(key)}
               flex={["enter", "backspace"].includes(key) ? 1.5 : 1}
               >{key === "backspace" ? <BackspaceIcon /> : key}
               
