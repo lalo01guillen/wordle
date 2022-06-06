@@ -1,5 +1,5 @@
 import './styles/App.css';  
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import styled from "styled-components";
 import { GameSection, Tile, TileContainer, TileRow } from './components/TileContainer';
 import { KeyboardButton, KeyboardRow, KeyboardSection, Flex, BackspaceIcon} from './components/KeyBoardUI';
@@ -41,10 +41,22 @@ function App() {
   const allKeys = keyboardRows.flat();
   const handleClick = (key) =>{};
 
+  const wordLength = 5;
+
+  const [guesses, setGuesses] = useState({
+    0: Array.from({length: wordLength}).fill(""),
+    1: Array.from({length: wordLength}).fill(""),
+    2: Array.from({length: wordLength}).fill(""),
+    3: Array.from({length: wordLength}).fill(""),
+    4: Array.from({length: wordLength}).fill(""),
+    5: Array.from({length: wordLength}).fill(""),
+  });
+
   useEffect(() => {
     const handleKeyDown = (evt) => {
       if(allKeys.includes(evt.key)){
-        console.log(evt.key)
+        console.log(evt.key);
+        console.log(Object.values(guesses));
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -57,19 +69,20 @@ function App() {
 
   
   
-  
   return (
     <Main>
       <Header>WORDLE</Header>
       <GameSection>
         <TileContainer>
-          {[0,1,2,3,4,5].map((item) => (
-            <TileRow key={item}>
-              {[0,1,2,3,4].map((item)=>(
-                <Tile key={item}></Tile>
-              ))}
-            </TileRow>
-          ))}
+         {Object.values(guesses).map((word, index) => (
+           <TileRow key={index}>
+             {word.map((letter, index) => (
+               <Tile key={index}>
+                 {letter}
+               </Tile>
+             ))}
+           </TileRow>
+         ))}
         </TileContainer>
       </GameSection>
       <KeyboardSection>
